@@ -1,0 +1,8 @@
+[default]
+topic_name = "the-topic"
+
+[main]
+topic_name = "my-topic"
+
+[other]
+topic_name = "other-topic"
