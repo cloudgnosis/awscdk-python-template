@@ -36,6 +36,7 @@ This is a **GitHub template repository**, so if you re using the GitHub GUI, you
 https://github.com/cloudgnosis/awscdk-python-template
 
 Or just copy the files, or use the parts that fit your use cases. Either way, I hope you find some parts of it useful.
+The file `__main__.py` contains a few simple examples.
 
 ### Reasoning behind the template
 
@@ -101,6 +102,8 @@ The *option processors* are simply functions that update the input options and r
 ### Things to do
 
 - Add handling for stack dependencies
+- Generate API docs
+	- Issues with getting **pdoc** to work when JSII is involved
 - Figure out reasonable scope without making it too heavy, for example
 	- Wrappers for sharing data between stacks? (Parameter store, etc)
 	- Add (optional) default monitoring (e.g. via cdk-monitoring-constructs)?
