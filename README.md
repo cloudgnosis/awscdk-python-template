@@ -42,15 +42,19 @@ The file `__main__.py` contains a few simple examples.
 
 The core of the template comes from a frustration with the regular `cdk init` templates, which is not that flexible. I rip out or change a lot of the content - to where I might have set it up from scratch instead.
 
-There is also a certain amount of boilerplate work for handling config data, stacks, tags, and AWS environment setup.  This also includes developer tooling, where I am a fan of tools like black, ruff, pytest and pre-commit.
+There is also a certain amount of boilerplate work for handling config data, stacks, tags, and AWS environment setup. I'm a fan of black (code formatting), ruff (code linting), pytest (testing) and pre-commit (run checks before git commit). So these are included by default.
 
-AWS CDK examples encourage building solutions with inheritance, and push most logic into constructors. Grouping resources through inheritance leads to (too) long resource identifiers. It makes it harder to refactor resources if you still want to keep the resources after refactoring, because of limitations with CloudFormation.
+AWS CDK examples encourage building solutions with inheritance, and push most logic into constructors. Grouping resources through inheritance leads to (too) long resource identifiers. Keeping resources after refactoring is difficult because of CloudFormation's restrictions.
+
+Also, I think inheritance is overused. **It might be useful for building specific reusable components, but not for everything in a CDK-based solution.**
 
 There are multiple project scaffolding solutions that work for Python, but not so much aimed at issues with AWS CDK and Python.
 
-The indention is to provide a rather lightweight template for setting up AWS CDK projects, which may cover some common use cases. It is extendable and many behaviours can be replaced easily, if desired.
+The intention is to provide a rather lightweight template for setting up AWS CDK projects, which may cover some common use cases. It is extendable and many behaviours can be replaced easily, if desired.
 
-### Example
+### Examples
+
+*All examples below call a function `add_sqs_sns_example()` to add an SQS queue and an SNS topic, with the SQS as a subscriber to that topic. This is very much like the default AWS CDK template generated, except that the stack to add them to is passed as a parameter to this function. The same pattern can be used for any resources.*
 
 Here is a rather simple example, which will have a single stack, and all resources tagged with `Environment = dev`:
 
@@ -98,6 +102,12 @@ def main_example():
 Here there are two stacks, with ids `main` and `other` and stack names `examples-main` and `examples-other` . There is a different **option processor**, which in this case includes reading config from TOML files. All config data is available though CDK context, so it can be retrieved via any CDK Construct-type object (Construct, Stack, Stage, App).
 
 The *option processors* are simply functions that update the input options and return a new set of input options. When all these processors have been executed, the actual model initialisation takes place.
+
+### Design considerations
+
+All options and the model structure use the **TypedDict** feature. This is like a regular dictionary, but also includes typing information for the defined fields. Thus you can get type hints in your editor of choice for these structures, plus it allows for you to extend them yourself as well. It also uses **structural typing**, meaning that as long as the dictionary includes the required fields, it is a valid data structure. No need to create class objects explicitly. It is kind of similar to the typing experience found in, for example, TypeScript.
+
+Rather than loading resources into the stack constructor, I suggest using regular functions to add them. This should help with building a bit more modular code without too much boilerplate.
 
 ### Things to do
 
