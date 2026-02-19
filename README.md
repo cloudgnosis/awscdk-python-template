@@ -1,3 +1,5 @@
+**This repository has been moved to https://codeberg.org/cloudgnosis/awscdk-python-template**
+
 # awscdk-python-template
 
 Project template for setting up infrastructure projects based on
